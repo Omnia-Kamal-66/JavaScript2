@@ -1,3 +1,5 @@
+import { Modal } from "./UI/Modal";
+
 //this class is to manage all buttons in the main html page
 
 class PlaceFinder {
@@ -5,22 +7,29 @@ class PlaceFinder {
     const getUserLocationBtn = document.getElementById("locate-btn");
     const form = document.querySelector("form");
 
-    getUserLocationBtn.addEventListener("click", this.findAddressHandler);
+    getUserLocationBtn.addEventListener("click", this.locateUserHandler);
     form.addEventListener("submit", this.formSubmitHandler);
   }
 
   formSubmitHandler() {}
 
-  findAddressHandler() {
+  locateUserHandler() {
+    const modal = new Modal(
+      "loading-modal-content",
+      "loading location , please wait"
+    );
+    modal.show();
     navigator.geolocation.getCurrentPosition(
       (successResult) => {
-        console.log(successResult);
+        modal.hide();
         const coordinates = {
           lat: successResult.coords.longitude,
           lng: successResult.coords.longitude,
         };
+        console.log(coordinates);
       },
       (error) => {
+        modal.hide();
         console.log(error);
       }
     );
